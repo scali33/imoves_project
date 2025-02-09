@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+
+{% block title %}Home - Imobiliária{% endblock %}
+
+{% block content %}
+    <header class="header">
+        <h1>Bem-vindo à Nossa Imobiliária</h1>
+    </header>
+
+    <div class="casas-container">
+        {% for casa in casas %}
+            <div class="casa">
+                <h3>{{ casa.endereco }}</h3>
+                <p>Valor: <strong>R$ {{ casa.valor }}</strong></p>
+                <a href="#" class="btn-detalhes">Ver Detalhes</a>
+            </div>
+        {% empty %}
+            <p>Não há casas disponíveis no momento.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

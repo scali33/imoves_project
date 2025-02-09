@@ -1,0 +1,21 @@
+<nav class="navbar">
+    <div class="container">
+        <a href="{% url 'home' %}" class="nav-logo">Imobiliária</a>
+        
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                <span class="user-email">{{ user.email }}</span>
+                <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+                
+                {% if user.tipo == 'vendedor' %}
+                    <a href="{% url 'register_casa' %}" class="nav-link">Registrar Casa</a>
+                {% else %}
+                    <a href="#" class="nav-link">Favoritos</a>
+                {% endif %}
+                
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-link">Login</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
