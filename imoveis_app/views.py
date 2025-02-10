@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import User, Casa, ImageCasa
 from django.contrib.auth import authenticate, login, logout
-from .forms import MyuserCreationForm, CasasForms, UploadFilesForm
+from .forms import MyuserCreationForm, CasasForms, ImageForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -49,21 +49,20 @@ def register_user(request):
 @login_required(login_url='login')
 def register_casa(request):
     form = CasasForms()
-    image_form = UploadFilesForm()  # Nome consistente
+    image_form = ImageForm()  # Nome consistente
     user = request.user
 
     if request.method == 'POST':
         form = CasasForms(request.POST)
-        image_form = UploadFilesForm(request.POST, request.FILES)  # Mantenha o nome correto
+        uploaded_images = request.FILES.getlist('images') # Mantenha o nome correto
 
-        if form.is_valid() and image_form.is_valid():  # Agora usa o nome correto
+        if form.is_valid():  # Agora usa o nome correto
             casa = form.save(commit=False)
             casa.vendedor = user
             casa.save()
 
-            imagens = request.FILES.getlist('files') # Pegando com segurança
-            print(imagens)
-            for img in imagens:
+           
+            for img in uploaded_images:
                 ImageCasa.objects.create(casa=casa, image=img)  # Certifique-se de que "imagem" é o campo correto no modelo
                 
 

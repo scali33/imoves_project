@@ -20,7 +20,7 @@
 
     {% if casa.vendedor %}
         <p><strong>Vendedor:</strong> {{ casa.vendedor }}</p>
-        <p><strong>Contato:</strong> {{ casa.vendedor.email }}</p>
+        <p><strong>Contato:</strong> {{ casa.vendedor.numero }}</p>
     {% else %}
         <p><strong>Vendedor:</strong> Não informado</p>
     {% endif %}
@@ -30,7 +30,7 @@
     <!-- Exibir imagens -->
     <div class="casa-imagens">
         {% for imagem in casa.imagens.all %}
-            <img src="{{ imagem.imagem.url }}" alt="Imagem da casa">
+            <img src="{{ imagem.image.url }}" alt="Imagem da casa">
         {% empty %}
             <p>Sem imagens disponíveis</p>
         {% endfor %}
