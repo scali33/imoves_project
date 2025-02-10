@@ -12,7 +12,7 @@
             <div class="casa">
                 <h3>{{ casa.endereco }}</h3>
                 <p>Valor: <strong>R$ {{ casa.valor }}</strong></p>
-                <a href="#" class="btn-detalhes">Ver Detalhes</a>
+                <a href="{% url 'view_casa' casa.id %}" class="btn-detalhes">Ver Detalhes</a>
             </div>
         {% empty %}
             <p>Não há casas disponíveis no momento.</p>

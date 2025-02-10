@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import User, Casa
+from .models import User, Casa, ImageCasa
 from django.contrib.auth import authenticate, login, logout
-from .forms import MyuserCreationForm, CasasForms
+from .forms import MyuserCreationForm, CasasForms, UploadFilesForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -46,19 +46,35 @@ def register_user(request):
         else:
             print('something went wrong with register user.')
     return render(request, 'im_templates/login.html', {'form':form})
-
-@login_required(login_url= 'login')
+@login_required(login_url='login')
 def register_casa(request):
     form = CasasForms()
+    image_form = UploadFilesForm()  # Nome consistente
     user = request.user
+
     if request.method == 'POST':
         form = CasasForms(request.POST)
-        if form.is_valid():
-            casa = form.save(commit= False)
+        image_form = UploadFilesForm(request.POST, request.FILES)  # Mantenha o nome correto
+
+        if form.is_valid() and image_form.is_valid():  # Agora usa o nome correto
+            casa = form.save(commit=False)
             casa.vendedor = user
             casa.save()
+
+            imagens = request.FILES.getlist('files') # Pegando com segurança
+            print(imagens)
+            for img in imagens:
+                ImageCasa.objects.create(casa=casa, image=img)  # Certifique-se de que "imagem" é o campo correto no modelo
+                
+
             return redirect('home')
         else:
-            print('there was a problem with the casa form')
-    return render(request, 'im_templates/register_casa.html', {'form':form})
+            print("❌ Erro na validação do formulário!")
 
+    return render(request, 'im_templates/register_casa.html', {'form': form, 'image_form': image_form})
+
+
+
+def view_casa(request,pk):
+    casa = Casa.objects.get(id = pk)
+    return render(request, 'im_templates/casa.html', {'casa':casa})

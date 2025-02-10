@@ -1,0 +1,41 @@
+{% extends "main.html" %}
+
+{% block title %}{{ casa.endereco }} - Detalhes{% endblock %}
+
+{% block content %}
+<div class="casa-detalhes">
+    <h1>{{ casa.endereco }}</h1>
+    <p><strong>Região:</strong> {{ casa.regiao_cidade }}</p>
+    <p><strong>Valor:</strong> R$ {{ casa.valor }}</p>
+
+    {% if casa.aluga %}
+        <p><strong>Disponível para aluguel:</strong> Sim</p>
+        <p><strong>Valor do aluguel:</strong> R$ {{ casa.aluguel_value }}</p>
+    {% else %}
+        <p><strong>Disponível para aluguel:</strong> Não</p>
+    {% endif %}
+
+    <p><strong>Área:</strong> {{ casa.metros_quadrados}} m²</p>
+    <p><strong>Descrição:</strong> {{ casa.descricao }}</p>
+
+    {% if casa.vendedor %}
+        <p><strong>Vendedor:</strong> {{ casa.vendedor }}</p>
+        <p><strong>Contato:</strong> {{ casa.vendedor.email }}</p>
+    {% else %}
+        <p><strong>Vendedor:</strong> Não informado</p>
+    {% endif %}
+
+    <p><strong>Data de cadastro:</strong> {{ casa.created }}</p>
+
+    <!-- Exibir imagens -->
+    <div class="casa-imagens">
+        {% for imagem in casa.imagens.all %}
+            <img src="{{ imagem.imagem.url }}" alt="Imagem da casa">
+        {% empty %}
+            <p>Sem imagens disponíveis</p>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'home' %}" class="btn-voltar">Voltar</a>
+</div>
+{% endblock %}

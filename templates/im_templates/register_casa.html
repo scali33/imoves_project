@@ -1,5 +1,25 @@
-<form method="POST" action="">
+{% extends "main.html" %}
+
+{% block title %}Cadastrar Casa{% endblock %}
+
+{% block content %}
+<h2>Cadastrar Nova Casa</h2>
+
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Registrar casa">
+    
+    <fieldset>
+        <legend>Detalhes da Casa</legend>
+        {{ form.as_p }}
+    </fieldset>
+
+    <fieldset>
+        <legend>Imagens</legend>
+        {{ image_form.as_p }}
+    </fieldset>
+
+    <button type="submit">Cadastrar</button>
 </form>
+
+<a href="{% url 'home' %}">Voltar</a>
+{% endblock %}

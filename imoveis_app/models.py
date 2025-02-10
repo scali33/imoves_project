@@ -12,6 +12,7 @@ class User(AbstractUser):
     name = models.CharField(max_length=200, blank=True, null=True)  # Opcional
     tipo = models.CharField(max_length=10, choices=TIPO_USUARIO, default='comprador')
     USERNAME_FIELD = 'email'
+    numero = models.CharField(max_length=20, blank=True, null=True)
     REQUIRED_FIELDS = ['username']  # 'username' ainda é necessário para criar superusers corretamente
 
     def __str__(self):
@@ -40,3 +41,7 @@ class Favorito(models.Model):
 
     def __str__(self):
         return f"{self.usuario.name} favoritou {self.casa.endereco}"
+
+class ImageCasa(models.Model):
+    casa = models.ForeignKey(Casa, on_delete=models.CASCADE, related_name="imagens")
+    image = models.ImageField(upload_to='casa_images/')
